@@ -9,10 +9,9 @@ from graphon.runtime import GraphRuntimeState, VariablePool
 from graphon.variables import StringSegment
 
 from core.app.entities.app_invoke_entities import InvokeFrom, UserFrom
+from core.rag.entities import Condition, MetadataFilteringCondition
 from core.workflow.nodes.knowledge_retrieval.entities import (
-    Condition,
     KnowledgeRetrievalNodeData,
-    MetadataFilteringCondition,
     MultipleRetrievalConfig,
     RerankingModelConfig,
     SingleRetrievalConfig,

@@ -30,14 +30,11 @@ from graphon.variables.segments import ArrayObjectSegment
 from core.app.app_config.entities import DatasetRetrieveConfigEntity
 from core.app.entities.app_invoke_entities import DIFY_RUN_CONTEXT_KEY, DifyRunContext
 from core.rag.data_post_processor.data_post_processor import RerankingModelDict, WeightsDict
+from core.rag.entities import Condition, MetadataFilteringCondition
 from core.rag.retrieval.dataset_retrieval import DatasetRetrieval
 from core.workflow.file_reference import parse_file_reference
 
-from .entities import (
-    Condition,
-    KnowledgeRetrievalNodeData,
-    MetadataFilteringCondition,
-)
+from .entities import KnowledgeRetrievalNodeData
 from .exc import (
     KnowledgeRetrievalNodeError,
     RateLimitExceededError,

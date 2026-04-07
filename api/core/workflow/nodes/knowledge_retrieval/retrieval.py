@@ -5,8 +5,7 @@ from graphon.nodes.llm.entities import ModelConfig
 from pydantic import BaseModel, Field
 
 from core.rag.data_post_processor.data_post_processor import RerankingModelDict, WeightsDict
-
-from .entities import MetadataFilteringCondition
+from core.rag.entities import MetadataFilteringCondition
 
 
 class SourceChildChunk(BaseModel):
