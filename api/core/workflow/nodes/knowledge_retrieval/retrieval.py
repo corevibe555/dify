@@ -2,7 +2,7 @@ from typing import Any, Literal, Protocol
 
 from graphon.model_runtime.entities import LLMUsage
 from graphon.nodes.llm.entities import ModelConfig
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from core.rag.data_post_processor.data_post_processor import RerankingModelDict, WeightsDict
 
@@ -38,8 +38,7 @@ class SourceMetadata(BaseModel):
     doc_metadata: dict[str, Any] | None = Field(default=None, description="Additional document metadata")
     position: int | None = Field(default=0, description="Position of the document in the dataset")
 
-    class Config:
-        populate_by_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class Source(BaseModel):
