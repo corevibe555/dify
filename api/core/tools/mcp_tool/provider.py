@@ -15,7 +15,6 @@ from core.tools.entities.tool_entities import (
 )
 from core.tools.mcp_tool.tool import MCPTool
 from models.tools import MCPToolProvider
-from services.tools.tools_transform_service import ToolTransformService
 
 
 class MCPToolProviderController(ToolProviderController):
@@ -61,6 +60,8 @@ class MCPToolProviderController(ToolProviderController):
         """
         create a MCPToolProviderController from a MCPProviderEntity
         """
+        from services.tools.tools_transform_service import ToolTransformService
+
         remote_mcp_tools = [RemoteMCPTool(**tool) for tool in entity.tools]
 
         tools = [

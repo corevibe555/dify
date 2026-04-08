@@ -1,6 +1,5 @@
 from core.rag.extractor.extractor_base import BaseExtractor
 from core.rag.models.document import Document
-from services.website_service import WebsiteService
 
 
 class JinaReaderWebExtractor(BaseExtractor):
@@ -25,6 +24,8 @@ class JinaReaderWebExtractor(BaseExtractor):
 
     def extract(self) -> list[Document]:
         """Extract content from the URL."""
+        from services.website_service import WebsiteService
+
         documents = []
         if self.mode == "crawl":
             crawl_data = WebsiteService.get_crawl_url_data(self.job_id, "jinareader", self._url, self.tenant_id)

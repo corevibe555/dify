@@ -42,8 +42,6 @@ from models.dataset import AutomaticRulesConfig, ChildChunk, Dataset, DatasetPro
 from models.dataset import Document as DatasetDocument
 from models.enums import DataSourceType, IndexingStatus, ProcessRuleMode, SegmentStatus
 from models.model import UploadFile
-from services.feature_service import FeatureService
-
 logger = logging.getLogger(__name__)
 
 
@@ -282,6 +280,8 @@ class IndexingRunner:
         Estimate the indexing for the document.
         """
         # check document limit
+        from services.feature_service import FeatureService
+
         features = FeatureService.get_features(tenant_id)
         if features.billing.enabled:
             count = len(extract_settings)

@@ -10,7 +10,6 @@ from graphon.nodes.question_classifier.entities import (
 )
 
 from core.plugin.backwards_invocation.base import BaseBackwardsInvocation
-from services.workflow_service import WorkflowService
 
 
 class PluginNodeBackwardsInvocation(BaseBackwardsInvocation):
@@ -36,6 +35,8 @@ class PluginNodeBackwardsInvocation(BaseBackwardsInvocation):
         :return: dict
         """
         # FIXME(-LAN-): Avoid import service into core
+        from services.workflow_service import WorkflowService
+
         workflow_service = WorkflowService()
         node_id = "1919810"
         node_data = ParameterExtractorNodeData(
@@ -87,6 +88,8 @@ class PluginNodeBackwardsInvocation(BaseBackwardsInvocation):
         :return: dict
         """
         # FIXME(-LAN-): Avoid import service into core
+        from services.workflow_service import WorkflowService
+
         workflow_service = WorkflowService()
         node_id = "1919810"
         node_data = QuestionClassifierNodeData(

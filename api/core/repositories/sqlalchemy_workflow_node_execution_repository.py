@@ -7,7 +7,7 @@ import json
 import logging
 from collections.abc import Callable, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import psycopg2.errors
 from graphon.entities import WorkflowNodeExecution
@@ -35,8 +35,9 @@ from models import (
 from models.enums import ExecutionOffLoadType
 from models.model import UploadFile
 from models.workflow import WorkflowNodeExecutionOffload
-from services.file_service import FileService
-from services.variable_truncator import VariableTruncator
+
+if TYPE_CHECKING:
+    from services.variable_truncator import VariableTruncator
 
 logger = logging.getLogger(__name__)
 
@@ -107,9 +108,13 @@ class SQLAlchemyWorkflowNodeExecutionRepository(WorkflowNodeExecutionRepository)
         self._node_execution_cache: dict[str, WorkflowNodeExecutionModel] = {}
 
         # Initialize FileService for handling offloaded data
+        from services.file_service import FileService
+
         self._file_service = FileService(session_factory)
 
-    def _create_truncator(self) -> VariableTruncator:
+    def _create_truncator(self) -> "VariableTruncator":
+        from services.variable_truncator import VariableTruncator
+
         return VariableTruncator(
             max_size_bytes=dify_config.WORKFLOW_VARIABLE_TRUNCATION_MAX_SIZE,
             array_element_limit=dify_config.WORKFLOW_VARIABLE_TRUNCATION_ARRAY_LENGTH,

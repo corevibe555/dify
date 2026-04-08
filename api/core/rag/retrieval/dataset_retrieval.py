@@ -84,8 +84,6 @@ from models.dataset import (
 from models.dataset import Document as DatasetDocument
 from models.dataset import Document as DocumentModel
 from models.enums import CreatorUserRole, DatasetQuerySource
-from services.external_knowledge_service import ExternalDatasetService
-from services.feature_service import FeatureService
 
 default_retrieval_model: DefaultRetrievalModelDict = {
     "search_method": RetrievalMethod.SEMANTIC_SEARCH,
@@ -642,6 +640,8 @@ class DatasetRetrieval:
             if selected_dataset:
                 results = []
                 if selected_dataset.provider == "external":
+                    from services.external_knowledge_service import ExternalDatasetService
+
                     external_documents = ExternalDatasetService.fetch_external_knowledge_retrieval(
                         tenant_id=selected_dataset.tenant_id,
                         dataset_id=dataset_id,
@@ -1072,6 +1072,8 @@ class DatasetRetrieval:
                 return []
 
             if dataset.provider == "external" and query:
+                from services.external_knowledge_service import ExternalDatasetService
+
                 external_documents = ExternalDatasetService.fetch_external_knowledge_retrieval(
                     tenant_id=dataset.tenant_id,
                     dataset_id=dataset_id,
@@ -1851,6 +1853,8 @@ class DatasetRetrieval:
         return available_datasets
 
     def _check_knowledge_rate_limit(self, tenant_id: str):
+        from services.feature_service import FeatureService
+
         knowledge_rate_limit = FeatureService.get_knowledge_rate_limit(tenant_id)
         if knowledge_rate_limit.enabled:
             current_time = int(time.time() * 1000)

@@ -30,8 +30,6 @@ from core.trigger.entities.entities import (
 )
 from core.trigger.errors import TriggerProviderCredentialValidationError
 from models.provider_ids import TriggerProviderID
-from services.plugin.plugin_service import PluginService
-
 logger = logging.getLogger(__name__)
 
 
@@ -73,6 +71,8 @@ class PluginTriggerProviderController:
         """
         Convert to API entity
         """
+        from services.plugin.plugin_service import PluginService
+
         icon = (
             PluginService.get_plugin_icon_url(self.tenant_id, self.entity.identity.icon)
             if self.entity.identity.icon

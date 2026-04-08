@@ -53,8 +53,6 @@ from models.provider import (
     TenantPreferredModelProvider,
 )
 from models.provider_ids import ModelProviderID
-from services.feature_service import FeatureService
-
 if TYPE_CHECKING:
     from graphon.model_runtime.runtime import ModelRuntime
 
@@ -508,6 +506,8 @@ class ProviderManager:
         cache_key = f"tenant:{tenant_id}:model_load_balancing_enabled"
         cache_result = redis_client.get(cache_key)
         if cache_result is None:
+            from services.feature_service import FeatureService
+
             model_load_balancing_enabled = FeatureService.get_features(tenant_id).model_load_balancing_enabled
             redis_client.setex(cache_key, 120, str(model_load_balancing_enabled))
         else:

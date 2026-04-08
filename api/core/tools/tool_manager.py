@@ -30,7 +30,6 @@ from core.tools.utils.uuid_utils import is_valid_uuid
 from core.tools.workflow_as_tool.provider import WorkflowToolProviderController
 from extensions.ext_database import db
 from models.provider_ids import ToolProviderID
-from services.tools.mcp_tools_manage_service import MCPToolManageService
 
 if TYPE_CHECKING:
     pass
@@ -63,7 +62,6 @@ from core.tools.utils.configuration import ToolParameterConfigurationManager
 from core.tools.utils.encryption import create_provider_encrypter, create_tool_provider_encrypter
 from core.tools.workflow_as_tool.tool import WorkflowTool
 from models.tools import ApiToolProvider, BuiltinToolProvider, WorkflowToolProvider
-from services.tools.tools_transform_service import ToolTransformService
 
 if TYPE_CHECKING:
     pass
@@ -359,6 +357,8 @@ class ToolManager:
 
             if workflow_provider is None:
                 raise ToolProviderNotFoundError(f"workflow provider {provider_id} not found")
+
+            from services.tools.tools_transform_service import ToolTransformService
 
             controller = ToolTransformService.workflow_provider_to_controller(db_provider=workflow_provider)
             controller_tools: list[WorkflowTool] = controller.get_tools(tenant_id=workflow_provider.tenant_id)
@@ -693,6 +693,9 @@ class ToolManager:
     def list_providers_from_api(
         cls, user_id: str, tenant_id: str, typ: ToolProviderTypeApiLiteral
     ) -> list[ToolProviderApiEntity]:
+        from services.tools.mcp_tools_manage_service import MCPToolManageService
+        from services.tools.tools_transform_service import ToolTransformService
+
         result_providers: dict[str, ToolProviderApiEntity] = {}
 
         filters = []
@@ -857,6 +860,8 @@ class ToolManager:
 
         :return: the provider controller, the credentials
         """
+        from services.tools.mcp_tools_manage_service import MCPToolManageService
+
         with Session(db.engine) as session:
             mcp_service = MCPToolManageService(session=session)
             try:
@@ -999,6 +1004,8 @@ class ToolManager:
 
     @classmethod
     def generate_mcp_tool_icon_url(cls, tenant_id: str, provider_id: str) -> EmojiIconDict | dict[str, str] | str:
+        from services.tools.mcp_tools_manage_service import MCPToolManageService
+
         try:
             with Session(db.engine) as session:
                 mcp_service = MCPToolManageService(session=session)

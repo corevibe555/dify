@@ -17,7 +17,6 @@ from core.plugin.backwards_invocation.base import BaseBackwardsInvocation
 from extensions.ext_database import db
 from models import Account
 from models.model import App, AppMode, EndUser
-from services.end_user_service import EndUserService
 
 
 class PluginAppBackwardsInvocation(BaseBackwardsInvocation):
@@ -66,6 +65,8 @@ class PluginAppBackwardsInvocation(BaseBackwardsInvocation):
         """
         app = cls._get_app(app_id, tenant_id)
         if not user_id:
+            from services.end_user_service import EndUserService
+
             user = EndUserService.get_or_create_end_user(app)
         else:
             user = cls._get_user(user_id)

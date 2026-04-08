@@ -15,7 +15,6 @@ from core.tools.utils.dataset_retriever.dataset_retriever_base_tool import Datas
 from extensions.ext_database import db
 from models.dataset import Dataset
 from models.dataset import Document as DatasetDocument
-from services.external_knowledge_service import ExternalDatasetService
 
 
 class DefaultRetrievalModelDict(TypedDict):
@@ -93,6 +92,8 @@ class DatasetRetrieverTool(DatasetRetrieverBaseTool):
         else:
             document_ids_filter = None
         if dataset.provider == "external":
+            from services.external_knowledge_service import ExternalDatasetService
+
             results: list[RetrievalDocument] = []
             external_documents = ExternalDatasetService.fetch_external_knowledge_retrieval(
                 tenant_id=dataset.tenant_id,

@@ -31,7 +31,6 @@ from libs import helper
 from models.account import Account
 from models.dataset import Dataset, DocumentSegment
 from models.dataset import Document as DatasetDocument
-from services.summary_index_service import SummaryIndexService
 
 logger = logging.getLogger(__name__)
 
@@ -153,6 +152,8 @@ class QAIndexProcessor(BaseIndexProcessor):
         # For disable operations, disable_summaries_for_segments is called directly in the task.
         # Note: qa_model doesn't generate summaries, but we clean them for completeness
         # Only delete summaries if explicitly requested (e.g., when segment is actually deleted)
+        from services.summary_index_service import SummaryIndexService
+
         delete_summaries = kwargs.get("delete_summaries", False)
         if delete_summaries:
             if node_ids:

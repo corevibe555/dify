@@ -17,7 +17,6 @@ from core.plugin.entities.plugin_daemon import (
 from core.plugin.impl.base import BasePluginClient
 from core.schemas.resolver import resolve_dify_schema_refs
 from models.provider_ids import DatasourceProviderID, GenericProviderID
-from services.tools.tools_transform_service import ToolTransformService
 
 
 class PluginDatasourceManager(BasePluginClient):
@@ -49,6 +48,8 @@ class PluginDatasourceManager(BasePluginClient):
         local_file_datasource_provider = PluginDatasourceProviderEntity.model_validate(
             self._get_local_file_datasource_provider()
         )
+
+        from services.tools.tools_transform_service import ToolTransformService
 
         for provider in response:
             ToolTransformService.repack_provider(tenant_id=tenant_id, provider=provider)
@@ -88,6 +89,8 @@ class PluginDatasourceManager(BasePluginClient):
             params={"page": 1, "page_size": 256},
             transformer=transformer,
         )
+
+        from services.tools.tools_transform_service import ToolTransformService
 
         for provider in response:
             ToolTransformService.repack_provider(tenant_id=tenant_id, provider=provider)

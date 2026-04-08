@@ -24,8 +24,6 @@ from core.tools.utils.message_transformer import ToolFileMessageTransformer
 from extensions.ext_database import db
 from factories import file_factory
 from models import ToolFile
-from services.tools.builtin_tools_manage_service import BuiltinToolManageService
-
 from .exceptions import AgentNodeError, AgentVariableTypeError, ToolFileNotFoundError
 
 _file_access_controller = DatabaseFileAccessController()
@@ -206,6 +204,8 @@ class AgentMessageTransformer:
                         except StopIteration:
                             pass
                         icon_dark = None
+                        from services.tools.builtin_tools_manage_service import BuiltinToolManageService
+
                         try:
                             builtin_tool = next(
                                 provider

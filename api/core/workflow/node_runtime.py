@@ -62,8 +62,6 @@ from extensions.ext_database import db
 from factories import file_factory
 from models.dataset import SegmentAttachmentBinding
 from models.model import UploadFile
-from services.tools.builtin_tools_manage_service import BuiltinToolManageService
-
 from .human_input_compat import (
     BoundRecipient,
     DeliveryChannelConfig,
@@ -429,6 +427,8 @@ class DifyToolNodeRuntime(ToolNodeRuntimeProtocol):
             icon = current_plugin.declaration.icon
         except StopIteration:
             pass
+
+        from services.tools.builtin_tools_manage_service import BuiltinToolManageService
 
         try:
             builtin_tool = next(

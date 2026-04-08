@@ -33,8 +33,6 @@ from core.workflow.nodes.datasource.entities import DatasourceParameter, OnlineD
 from factories import file_factory
 from models.model import UploadFile
 from models.tools import ToolFile
-from services.datasource_provider_service import DatasourceProviderService
-
 logger = logging.getLogger(__name__)
 _file_access_controller = DatabaseFileAccessController()
 
@@ -165,6 +163,8 @@ class DatasourceManager:
             tenant_id=tenant_id,
             datasource_type=ds_type,
         )
+
+        from services.datasource_provider_service import DatasourceProviderService
 
         dsp_service = DatasourceProviderService()
         credentials = dsp_service.get_datasource_credentials(

@@ -30,8 +30,6 @@ from libs import helper
 from models import Account
 from models.dataset import ChildChunk, Dataset, DatasetProcessRule, DocumentSegment
 from models.dataset import Document as DatasetDocument
-from services.account_service import AccountService
-from services.summary_index_service import SummaryIndexService
 
 logger = logging.getLogger(__name__)
 
@@ -148,6 +146,8 @@ class ParentChildIndexProcessor(BaseIndexProcessor):
         # This method is called for actual deletion scenarios (e.g., when segment is deleted).
         # For disable operations, disable_summaries_for_segments is called directly in the task.
         # Only delete summaries if explicitly requested (e.g., when segment is actually deleted)
+        from services.summary_index_service import SummaryIndexService
+
         delete_summaries = kwargs.get("delete_summaries", False)
         if delete_summaries:
             if node_ids:
@@ -312,6 +312,8 @@ class ParentChildIndexProcessor(BaseIndexProcessor):
                     attachments.append(file_document)
                 doc.attachments = attachments
             else:
+                from services.account_service import AccountService
+
                 account = AccountService.load_user(document.created_by)
                 if not account:
                     raise ValueError("Invalid account")

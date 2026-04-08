@@ -11,7 +11,6 @@ from core.rag.extractor.extractor_base import BaseExtractor
 from core.rag.models.document import Document
 from extensions.ext_database import db
 from models.dataset import Document as DocumentModel
-from services.datasource_provider_service import DatasourceProviderService
 
 logger = logging.getLogger(__name__)
 
@@ -381,6 +380,8 @@ class NotionExtractor(BaseExtractor):
 
     @classmethod
     def _get_access_token(cls, tenant_id: str, credential_id: str | None) -> str:
+        from services.datasource_provider_service import DatasourceProviderService
+
         # get credential from tenant_id and credential_id
         if not credential_id:
             raise Exception(f"No credential id found for tenant {tenant_id}")

@@ -11,7 +11,6 @@ from core.plugin.entities.parameters import PluginParameterOption
 from core.tools.builtin_tool.tool import BuiltinTool
 from core.tools.entities.common_entities import I18nObject
 from core.tools.entities.tool_entities import ToolInvokeMessage, ToolParameter
-from services.model_provider_service import ModelProviderService
 
 
 class ASRTool(BuiltinTool):
@@ -44,6 +43,8 @@ class ASRTool(BuiltinTool):
         yield self.create_text_message(text)
 
     def get_available_models(self) -> list[tuple[str, str]]:
+        from services.model_provider_service import ModelProviderService
+
         if not self.runtime:
             raise ValueError("Runtime is required")
         model_provider_service = ModelProviderService()

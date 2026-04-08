@@ -33,7 +33,6 @@ from models.dataset import (
 )
 from models.dataset import Document as DatasetDocument
 from models.model import UploadFile
-from services.external_knowledge_service import ExternalDatasetService
 
 
 class SegmentAttachmentResult(TypedDict):
@@ -177,6 +176,8 @@ class RetrievalService:
         external_retrieval_model: dict | None = None,
         metadata_filtering_conditions: dict | None = None,
     ):
+        from services.external_knowledge_service import ExternalDatasetService
+
         stmt = select(Dataset).where(Dataset.id == dataset_id)
         dataset = db.session.scalar(stmt)
         if not dataset:

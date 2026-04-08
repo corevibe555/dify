@@ -10,8 +10,6 @@ from core.app.entities.app_invoke_entities import InvokeFrom
 from core.app.features.rate_limiting.rate_limit import RateLimitGenerator
 from core.mcp import types as mcp_types
 from models.model import App, AppMCPServer, AppMode, EndUser
-from services.app_generate_service import AppGenerateService
-
 logger = logging.getLogger(__name__)
 
 
@@ -148,6 +146,8 @@ def handle_call_tool(
 
     if not end_user:
         raise ValueError("End user not found")
+
+    from services.app_generate_service import AppGenerateService
 
     response = AppGenerateService.generate(
         app,
