@@ -46,7 +46,6 @@ from extensions.otel import WorkflowAppRunnerHandler, trace_span
 from models import Workflow
 from models.model import App, Conversation, Message, MessageAnnotation
 from models.workflow import ConversationVariable
-from services.conversation_variable_updater import ConversationVariableUpdater
 
 logger = logging.getLogger(__name__)
 
@@ -239,6 +238,8 @@ class AdvancedChatAppRunner(WorkflowBasedAppRunner):
         )
 
         workflow_entry.graph_engine.layer(persistence_layer)
+        from services.conversation_variable_updater import ConversationVariableUpdater
+
         conversation_variable_layer = ConversationVariablePersistenceLayer(
             ConversationVariableUpdater(session_factory.get_session_maker())
         )

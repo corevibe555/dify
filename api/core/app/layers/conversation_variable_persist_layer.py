@@ -8,19 +8,22 @@ scope updates that matter to chat applications.
 """
 
 import logging
+from typing import TYPE_CHECKING
 
 from graphon.graph_engine.layers import GraphEngineLayer
 from graphon.graph_events import GraphEngineEvent, NodeRunVariableUpdatedEvent
 
 from core.workflow.system_variables import SystemVariableKey, get_system_text
 from core.workflow.variable_prefixes import CONVERSATION_VARIABLE_NODE_ID
-from services.conversation_variable_updater import ConversationVariableUpdater
+
+if TYPE_CHECKING:
+    from services.conversation_variable_updater import ConversationVariableUpdater
 
 logger = logging.getLogger(__name__)
 
 
 class ConversationVariablePersistenceLayer(GraphEngineLayer):
-    def __init__(self, conversation_variable_updater: ConversationVariableUpdater) -> None:
+    def __init__(self, conversation_variable_updater: "ConversationVariableUpdater") -> None:
         super().__init__()
         self._conversation_variable_updater = conversation_variable_updater
 

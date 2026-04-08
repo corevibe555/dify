@@ -4,7 +4,7 @@ import time
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, NewType, TypedDict, Union
+from typing import TYPE_CHECKING, Any, NewType, TypedDict, Union
 
 from graphon.entities import WorkflowStartReason
 from graphon.entities.pause_reason import HumanInputRequired
@@ -72,7 +72,8 @@ from libs.datetime_utils import naive_utc_now
 from models import Account, EndUser
 from models.human_input import HumanInputForm
 from models.workflow import WorkflowRun
-from services.variable_truncator import BaseTruncator, DummyVariableTruncator, VariableTruncator
+if TYPE_CHECKING:
+    from services.variable_truncator import BaseTruncator
 
 NodeExecutionId = NewType("NodeExecutionId", str)
 logger = logging.getLogger(__name__)
@@ -106,7 +107,7 @@ class _NodeSnapshot:
 
 
 class WorkflowResponseConverter:
-    _truncator: BaseTruncator
+    _truncator: "BaseTruncator"
 
     def __init__(
         self,
@@ -121,6 +122,8 @@ class WorkflowResponseConverter:
         self._workflow_inputs = self._prepare_workflow_inputs()
 
         # Disable truncation for SERVICE_API calls to keep backward compatibility.
+        from services.variable_truncator import DummyVariableTruncator, VariableTruncator
+
         if application_generate_entity.invoke_from == InvokeFrom.SERVICE_API:
             self._truncator = DummyVariableTruncator()
         else:

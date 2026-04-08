@@ -26,7 +26,6 @@ from extensions.ext_database import db
 from factories import file_factory
 from models import Account
 from models.model import App, EndUser
-from services.conversation_service import ConversationService
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +94,8 @@ class ChatAppGenerator(MessageBasedAppGenerator):
         conversation = None
         conversation_id = args.get("conversation_id")
         if conversation_id:
+            from services.conversation_service import ConversationService
+
             conversation = ConversationService.get_conversation(
                 app_model=app_model, conversation_id=conversation_id, user=user
             )

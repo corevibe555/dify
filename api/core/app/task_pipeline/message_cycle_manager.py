@@ -36,7 +36,6 @@ from extensions.ext_database import db
 from extensions.ext_redis import redis_client
 from models.enums import MessageFileBelongsTo
 from models.model import AppMode, Conversation, MessageAnnotation, MessageFile
-from services.annotation_service import AppAnnotationService
 
 logger = logging.getLogger(__name__)
 
@@ -154,6 +153,8 @@ class MessageCycleManager:
         :param event: event
         :return:
         """
+        from services.annotation_service import AppAnnotationService
+
         annotation = AppAnnotationService.get_annotation_by_id(event.message_annotation_id)
         if annotation:
             account = annotation.account

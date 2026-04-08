@@ -18,7 +18,6 @@ from extensions.ext_database import db
 from factories import file_factory
 from libs.orjson import orjson_dumps
 from models import Account, EndUser
-from services.workflow_draft_variable_service import DraftVariableSaver as DraftVariableSaverImpl
 
 if TYPE_CHECKING:
     from graphon.variables.input_entities import VariableEntity
@@ -46,6 +45,8 @@ class _DebuggerDraftVariableSaver:
         self._enclosing_node_id = enclosing_node_id
 
     def save(self, process_data: Mapping[str, Any] | None, outputs: Mapping[str, Any] | None) -> None:
+        from services.workflow_draft_variable_service import DraftVariableSaver as DraftVariableSaverImpl
+
         with Session(db.engine) as session, session.begin():
             DraftVariableSaverImpl(
                 session=session,

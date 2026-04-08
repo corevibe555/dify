@@ -48,9 +48,6 @@ from models import Account, EndUser, Workflow, WorkflowNodeExecutionTriggeredFro
 from models.dataset import Document, DocumentPipelineExecutionLog, Pipeline
 from models.enums import WorkflowRunTriggeredFrom
 from models.model import AppMode
-from services.datasource_provider_service import DatasourceProviderService
-from services.rag_pipeline.rag_pipeline_task_proxy import RagPipelineTaskProxy
-from services.workflow_draft_variable_service import DraftVarLoader, WorkflowDraftVariableService
 
 logger = logging.getLogger(__name__)
 
@@ -246,6 +243,8 @@ class PipelineGenerator(BaseAppGenerator):
                 )
 
         if rag_pipeline_invoke_entities:
+            from services.rag_pipeline.rag_pipeline_task_proxy import RagPipelineTaskProxy
+
             RagPipelineTaskProxy(dataset.tenant_id, user.id, rag_pipeline_invoke_entities).delay()
         # return batch, dataset, documents
         return {
@@ -420,6 +419,8 @@ class PipelineGenerator(BaseAppGenerator):
             app_id=application_generate_entity.app_config.app_id,
             triggered_from=WorkflowNodeExecutionTriggeredFrom.SINGLE_STEP,
         )
+        from services.workflow_draft_variable_service import DraftVarLoader, WorkflowDraftVariableService
+
         draft_var_srv = WorkflowDraftVariableService(db.session())
         draft_var_srv.prefill_conversation_variable_default_values(workflow, user_id=user.id)
         var_loader = DraftVarLoader(
@@ -516,6 +517,8 @@ class PipelineGenerator(BaseAppGenerator):
             app_id=application_generate_entity.app_config.app_id,
             triggered_from=WorkflowNodeExecutionTriggeredFrom.SINGLE_STEP,
         )
+        from services.workflow_draft_variable_service import DraftVarLoader, WorkflowDraftVariableService
+
         draft_var_srv = WorkflowDraftVariableService(db.session())
         draft_var_srv.prefill_conversation_variable_default_values(workflow, user_id=user.id)
         var_loader = DraftVarLoader(
@@ -739,6 +742,8 @@ class PipelineGenerator(BaseAppGenerator):
                 tenant_id=pipeline.tenant_id,
                 datasource_type=DatasourceProviderType(datasource_type),
             )
+            from services.datasource_provider_service import DatasourceProviderService
+
             datasource_provider_service = DatasourceProviderService()
             credentials = datasource_provider_service.get_datasource_credentials(
                 tenant_id=pipeline.tenant_id,

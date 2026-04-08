@@ -1,14 +1,14 @@
 import logging
 import uuid
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from apscheduler.schedulers.background import BackgroundScheduler  # type: ignore
 from graphon.graph_engine.entities.commands import CommandType, GraphEngineCommand
 from graphon.graph_engine.layers import GraphEngineLayer
 from graphon.graph_events import GraphEngineEvent
 
-from services.workflow.entities import WorkflowScheduleCFSPlanEntity
-from services.workflow.scheduler import CFSPlanScheduler, SchedulerCommand
+if TYPE_CHECKING:
+    from services.workflow.scheduler import CFSPlanScheduler
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ class TimeSliceLayer(GraphEngineLayer):
 
     scheduler: ClassVar[BackgroundScheduler] = BackgroundScheduler()
 
-    def __init__(self, cfs_plan_scheduler: CFSPlanScheduler) -> None:
+    def __init__(self, cfs_plan_scheduler: "CFSPlanScheduler") -> None:
         """
         CFS plan scheduler allows to control the timeslice of the workflow.
         """
@@ -41,6 +41,8 @@ class TimeSliceLayer(GraphEngineLayer):
             if self.stopped:
                 self.scheduler.remove_job(schedule_id)
                 return
+
+            from services.workflow.scheduler import SchedulerCommand
 
             if self.cfs_plan_scheduler.can_schedule() == SchedulerCommand.RESOURCE_LIMIT_REACHED:
                 # remove the job
@@ -67,6 +69,8 @@ class TimeSliceLayer(GraphEngineLayer):
         """
         Start timer to check if the workflow need to be suspended.
         """
+
+        from services.workflow.entities import WorkflowScheduleCFSPlanEntity
 
         if self.cfs_plan_scheduler.plan.schedule_strategy == WorkflowScheduleCFSPlanEntity.Strategy.TimeSlice:
             self.schedule_id = uuid.uuid4().hex
