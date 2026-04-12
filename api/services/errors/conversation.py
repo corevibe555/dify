@@ -1,11 +1,9 @@
-from services.errors.base import BaseServiceError
+from core.errors import BaseServiceError, ConversationNotExistsError
+
+__all__ = ["ConversationNotExistsError"]
 
 
 class LastConversationNotExistsError(BaseServiceError):
-    pass
-
-
-class ConversationNotExistsError(BaseServiceError):
     pass
 
 

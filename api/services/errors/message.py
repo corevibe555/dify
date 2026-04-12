@@ -1,4 +1,6 @@
-from services.errors.base import BaseServiceError
+from core.errors import BaseServiceError, MessageNotExistsError
+
+__all__ = ["MessageNotExistsError"]
 
 
 class FirstMessageNotExistsError(BaseServiceError):
@@ -6,10 +8,6 @@ class FirstMessageNotExistsError(BaseServiceError):
 
 
 class LastMessageNotExistsError(BaseServiceError):
-    pass
-
-
-class MessageNotExistsError(BaseServiceError):
     pass
 
 
